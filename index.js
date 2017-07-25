@@ -35,49 +35,62 @@ var enableDebugMode = function(enable) {
 }
 
 var __main = function() {
-    enableDebugMode(true)
+    var images = {
+        ball: 'img/ball.png',
+        block: 'img/block.png',
+        paddle: 'img/paddle.png',
+    }
 
-    var game = GeGame(30)
-    var paddle = Paddle()
-    var ball = Ball()
+    var game = GeGame(30, images, function(g) {
+        var paddle = Paddle(game)
+        var ball = Ball(game)
 
-    blocks = loadLevel(1)
+        var score = 0
 
-    game.registerAction('a', function() {
-        paddle.moveLeft()
-    })
-    game.registerAction('d', function() {
-        paddle.moveRight()
-    })
-    game.registerAction('f', function() {
-        ball.fire()
-    })
-    game.update = function() {
-        if (window.paused) {
-            return
-        }
-        ball.move()
-        if (paddle.collide(ball)) {
-            ball.bounce()
-        }
-        for (var i = 0; i < blocks.length; i++) {
-            var block = blocks[i]
-            if (block.collide(ball)) {
-                block.kill()
+        blocks = loadLevel(1)
+
+        var paused = false
+        game.registerAction('a', function() {
+            paddle.moveLeft()
+        })
+        game.registerAction('d', function() {
+            paddle.moveRight()
+        })
+        game.registerAction('f', function() {
+            ball.fire()
+        })
+        game.update = function() {
+            if (window.paused) {
+                return
+            }
+            ball.move()
+            if (paddle.collide(ball)) {
                 ball.bounce()
             }
-        }
-    }
-    game.draw = function() {
-        game.drawImage(paddle)
-        game.drawImage(ball)
-        for (var i = 0; i < blocks.length; i++) {
-            var block = blocks[i]
-            if (block.alive) {
-                game.drawImage(block)
+            for (var i = 0; i < blocks.length; i++) {
+                var block = blocks[i]
+                if (block.collide(ball)) {
+                    block.kill()
+                    ball.bounce()
+                    // 更新分数
+                    score += 100
+                }
             }
         }
-    }
+        game.draw = function() {
+            game.drawImage(paddle)
+            game.drawImage(ball)
+            for (var i = 0; i < blocks.length; i++) {
+                var block = blocks[i]
+                if (block.alive) {
+                    game.drawImage(block)
+                }
+            }
+            // draw labels
+            game.context.fillText('分数: ' + score, 10, 290)
+        }
+    })
+    enableDebugMode(game, true)
 }
 
 __main()

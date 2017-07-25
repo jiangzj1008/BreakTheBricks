@@ -1,7 +1,8 @@
-var GeGame = function() {
+var GeGame = function(fps, images, runCallback) {
     var g = {
         actions: {},
         keydowns: {},
+        images: {},
     }
     var canvas = e('#id-canvas')
     var context = canvas.getContext('2d')
@@ -40,9 +41,43 @@ var GeGame = function() {
         }, 1000/window.fps)
     }
 
-    setTimeout(function(){
-        runloop()
-    }, 1000/fps)
+    var loads = []
+    // 预先载入所有图片
+    var names = Object.keys(images)
+    for (var i = 0; i < names.length; i++) {
+        let name = names[i]
+        var path = images[name]
+        let img = new Image()
+        img.src = path
+        img.onload = function() {
+            // 存入 g.images 中
+            g.images[name] = img
+            // 所有图片都成功载入之后, 调用 run
+            loads.push(1)
+            log('load images', loads.length, names.length)
+            if (loads.length == names.length) {
+                log('load images', g.images)
+                g.run()
+            }
+        }
+    }
+    g.imageByName = function(name) {
+        log('image by name', g.images)
+        var img = g.images[name]
+        var image = {
+            w: img.width,
+            h: img.height,
+            image: img,
+        }
+        return image
+    }
+    g.run = function() {
+        runCallback(g)
+        // 开始运行程序
+        setTimeout(function(){
+            runloop()
+        }, 1000/fps)
+    }
 
     return g
 }
