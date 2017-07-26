@@ -1,17 +1,17 @@
-var loadLevel = function(n) {
+var loadLevel = function(game, n) {
     n = n - 1
     var level = levels[n]
     var blocks = []
     for (var i = 0; i < level.length; i++) {
         var p = level[i]
-        var b = Block(p)
+        var b = Block(game, p)
         blocks.push(b)
     }
     return blocks
 }
 
 var blocks = []
-var enableDebugMode = function(enable) {
+var enableDebugMode = function(game, enable) {
     if(!enable) {
         return
     }
@@ -23,7 +23,7 @@ var enableDebugMode = function(enable) {
             window.paused = !window.paused
         } else if ('1234567'.includes(k)) {
             // 为了 debug 临时加的载入关卡功能
-            blocks = loadLevel(Number(k))
+            blocks = loadLevel(game, Number(k))
         }
     })
     // 控制速度
@@ -47,7 +47,7 @@ var __main = function() {
 
         var score = 0
 
-        blocks = loadLevel(1)
+        blocks = loadLevel(game, 1)
 
         var paused = false
         game.registerAction('a', function() {
@@ -77,6 +77,36 @@ var __main = function() {
                 }
             }
         }
+
+        // mouse event
+        var enableDrag = false
+        game.canvas.addEventListener('mousedown', function(event) {
+            var x = event.offsetX
+            var y = event.offsetY
+            log(x, y, event)
+            // 检查是否点中了 ball
+            if (ball.hasPoint(x, y)) {
+                // 设置拖拽状态
+                enableDrag = true
+            }
+        })
+        game.canvas.addEventListener('mousemove', function(event) {
+            var x = event.offsetX
+            var y = event.offsetY
+            // log(x, y, 'move')
+            if (enableDrag) {
+                log(x, y, 'drag')
+                ball.x = x
+                ball.y = y
+            }
+        })
+        game.canvas.addEventListener('mouseup', function(event) {
+            var x = event.offsetX
+            var y = event.offsetY
+            log(x, y, 'up')
+            enableDrag = false
+        })
+
         game.draw = function() {
             game.drawImage(paddle)
             game.drawImage(ball)
