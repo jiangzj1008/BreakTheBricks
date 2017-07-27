@@ -1,5 +1,6 @@
 var GeGame = function(fps, images, runCallback) {
     var g = {
+        scene: null,
         actions: {},
         keydowns: {},
         images: {},
@@ -19,6 +20,14 @@ var GeGame = function(fps, images, runCallback) {
     window.addEventListener('keyup', function(event) {
         g.keydowns[event.key] = false
     })
+    // update
+    g.update = function() {
+        g.scene.update()
+    }
+    // draw
+    g.draw = function() {
+        g.scene.draw()
+    }
     // register
     g.registerAction = function(key, callback) {
         g.actions[key] = callback
@@ -57,7 +66,7 @@ var GeGame = function(fps, images, runCallback) {
             log('load images', loads.length, names.length)
             if (loads.length == names.length) {
                 log('load images', g.images)
-                g.run()
+                g.__start()
             }
         }
     }
@@ -71,12 +80,18 @@ var GeGame = function(fps, images, runCallback) {
         }
         return image
     }
-    g.run = function() {
-        runCallback(g)
+    g.runWithScene = function(scene) {
+        g.scene = scene
         // 开始运行程序
         setTimeout(function(){
             runloop()
         }, 1000/fps)
+    }
+    g.replaceScene = function(scene) {
+        g.scene = scene
+    }
+    g.__start = function(scene) {
+        runCallback(g)
     }
 
     return g
