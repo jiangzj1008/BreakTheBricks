@@ -14,8 +14,8 @@ var Paddle = function(game) {
         if (x < 0) {
             x = 0
         }
-        if (x > 1000 - o.image.width) {
-            x = 1000 - o.image.width
+        if (x > 500 - o.image.width) {
+            x = 500 - o.image.width
         }
         o.x = x
     }

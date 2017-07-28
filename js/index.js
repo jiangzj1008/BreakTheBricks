@@ -40,8 +40,8 @@ var __main = function() {
         paddle: 'img/paddle.png',
     }
 
-    var game = GeGame(30, images, function(g) {
-        var s = Scene(g)
+    var game = GeGame.instance(30, images, function(g) {
+        var s = SceneTitle.new(g)
         g.runWithScene(s)
     })
 

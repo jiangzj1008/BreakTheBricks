@@ -11,10 +11,10 @@ var Ball = function(game) {
     }
     o.move = function() {
         if (o.fired === true) {
-            if (o.x < 0 || o.x > 1000) {
+            if (o.x < 0 || o.x > 500) {
                 o.speedX = -o.speedX
             }
-            if (o.y < 0 || o.y > 800) {
+            if (o.y < 0 || o.y > 400) {
                 o.speedY = -o.speedY
             }
             o.x += o.speedX

@@ -23,7 +23,7 @@ var Scene = function(game) {
     s.draw = function() {
         // draw 背景
         game.context.fillStyle = "#554"
-        game.context.fillRect(0, 0, 400, 300)
+        game.context.fillRect(0, 0, 500, 400)
         // draw
         game.drawImage(paddle)
         game.drawImage(ball)
@@ -46,7 +46,7 @@ var Scene = function(game) {
         // 判断游戏结束
         if (ball.y > paddle.y) {
             // 跳转到 游戏结束 的场景
-            var end = SceneEnd(game)
+            var end = new SceneEnd(game)
             game.replaceScene(end)
         }
         // 判断相撞
@@ -66,7 +66,7 @@ var Scene = function(game) {
             }
         }
     }
-    
+
     // mouse event
     var enableDrag = false
     game.canvas.addEventListener('mousedown', function(event) {
