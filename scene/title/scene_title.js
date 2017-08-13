@@ -1,13 +1,16 @@
-class SceneTitle extends GuaScene {
+class SceneTitle extends GeScene {
     constructor(game) {
         super(game)
         game.registerAction('k', function(){
-            var s = Scene(game)
+            var s = Scene.new(game)
             game.replaceScene(s)
         })
     }
     draw() {
-        // draw labels
-        this.game.context.fillText('按 k 开始游戏', 100, 190)
+        var text = '按 K 开始游戏'
+        this.game.drawText(text, 150, 200)
+    }
+    update() {
+
     }
 }

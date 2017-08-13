@@ -1,24 +1,19 @@
-var Block = function(game, position) {
-    // positon 是 [0, 0] 格式
-    var p = position
-    var img = game.imageByName('block')
-    var o = {
-        x: p[0],
-        y: p[1],
-        alive: true,
-        lifes: p[2] || 1,
+class Block extends GeImage {
+    constructor(game, position) {
+        super(game, 'block1')
+        this.x = position[0]
+        this.y = position[1]
+        this.life = position[2] || 1
+        this.frames = ['block1', 'block2', 'block3']
     }
-    o.image = img.image
-    o.w = img.w
-    o.h = img.h
-    o.kill = function() {
-        o.lifes--
-        if (o.lifes < 1) {
-            o.alive = false
-        }
+    hasPoint(x, y) {
+        var o = this
+        var xIn = x >= o.x && x <= o.x + o.w
+        var yIn = y >= o.y && y <= o.y + o.h
+        return xIn && yIn
     }
-    o.collide = function(b) {
-        return o.alive && (rectIntersects(o, b) || rectIntersects(b, o))
+    update() {
+        var name = this.frames[this.life-1]
+        this.texture = this.game.textureByName(name)
     }
-    return o
 }

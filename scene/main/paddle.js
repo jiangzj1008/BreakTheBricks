@@ -1,42 +1,32 @@
-var Paddle = function(game) {
-    var o = game.imageByName('paddle')
-    // var o = {
-    //     image: image,
-    //     x: 100,
-    //     y: 250,
-    //     speed: 15,
-    // }
-    o.x = 100
-    o.y = 250
-    o.speed = 15
-    var paddle = o
-    o.move = function(x) {
+class Paddle extends GeImage {
+    constructor(game) {
+        super(game, 'paddle')
+        this.setup()
+    }
+    setup() {
+        this.life = 1
+        this.x = (500 - this.w) / 2
+        this.y = (400 - this.h) / 2 + 150
+        this.speed = 10
+    }
+    move(x) {
         if (x < 0) {
             x = 0
+        } else if (x > 500 - this.w) {
+            x = 500 - this.w
         }
-        if (x > 500 - o.image.width) {
-            x = 500 - o.image.width
+        this.x = x
+    }
+    moveLeft(status) {
+        if (status == 'down') {
+            this.flipX = true
+            this.move((this.x - this.speed))
         }
-        o.x = x
     }
-    o.moveLeft = function() {
-        o.move(paddle.x - paddle.speed)
-    }
-    o.moveRight = function() {
-        o.move(paddle.x + paddle.speed)
-    }
-    var aInb = function(x, x1, x2) {
-        return x >= x1 && x <= x2
-    }
-    o.collide = function(ball) {
-        var a = o
-        var b = ball
-        if (aInb(a.x, b.x, b.x + b.w) || aInb(b.x, a.x, a.x + a.w)) {
-            if (aInb(a.y, b.y, b.y + b.h) || aInb(b.y, a.y, a.y + a.h)) {
-                return true
-            }
+    moveRight(status) {
+        if (status == 'down') {
+            this.flipX = false
+            this.move((this.x + this.speed))
         }
-        return false
     }
-    return o
 }

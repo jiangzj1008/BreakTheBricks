@@ -1,33 +1,47 @@
-var Ball = function(game) {
-    var o = game.imageByName('ball')
-    // var image = imageFromPath('ball.png')
-    o.x = 100
-    o.y = 200
-    o.speedX = 5
-    o.speedY = 5
-    o.fired = false
-    o.fire = function() {
-        o.fired = true
+class Ball extends GeImage {
+    constructor(game) {
+        super(game, 'ball')
+        this.setup()
     }
-    o.move = function() {
-        if (o.fired === true) {
+    setup() {
+        this.life = 1
+        this.x = (500 - this.w) / 2
+        this.y = (400 - this.h) / 2 + 100
+        this.fired = false
+        this.speedX = 10
+        this.speedY = 10
+    }
+    move(x) {
+        if (x < 0) {
+            x = 0
+        } else if (x > 500 - this.w) {
+            x = 500 - this.w
+        }
+        this.x = x
+    }
+    bounce() {
+        this.speedY *= -1
+    }
+    hasPoint(x, y) {
+        var o = this
+        var xIn = x >= o.x && x <= o.x + o.w
+        var yIn = y >= o.y && y <= o.y + o.h
+        return xIn && yIn
+    }
+    update() {
+        var o = this
+        if (o.fired) {
             if (o.x < 0 || o.x > 500) {
                 o.speedX = -o.speedX
             }
-            if (o.y < 0 || o.y > 400) {
+            if (o.y < 0) {
                 o.speedY = -o.speedY
+            }
+            if (o.y > 400) {
+                o.life--
             }
             o.x += o.speedX
             o.y += o.speedY
         }
     }
-    o.bounce = function() {
-        o.speedY *= -1
-    }
-    o.hasPoint = function(x, y) {
-        var xIn = x >= o.x && x <= o.x + o.w
-        var yIn = y >= o.y && y <= o.y + o.h
-        return xIn && yIn
-    }
-    return o
 }

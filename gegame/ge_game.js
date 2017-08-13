@@ -12,10 +12,10 @@ class GeGame {
         // events
         var self = this
         window.addEventListener('keydown', event => {
-            this.keydowns[event.key] = true
+            this.keydowns[event.key] = 'down'
         })
         window.addEventListener('keyup', function(event){
-            self.keydowns[event.key] = false
+            self.keydowns[event.key] = 'up'
         })
         this.init()
     }
@@ -23,8 +23,16 @@ class GeGame {
         this.i = this.i || new this(...args)
         return this.i
     }
+    drawText(text, x, y) {
+        this.context.font = "24px serif";
+        this.context.fillText(text, x, y)
+    }
     drawImage(img) {
-        this.context.drawImage(img.image, img.x, img.y)
+        if (img.draw) {
+            img.draw()
+        } else {
+            this.context.drawImage(img.texture, img.x, img.y)
+        }
     }
     // update
     update() {
@@ -39,14 +47,16 @@ class GeGame {
         this.actions[key] = callback
     }
     runloop() {
-        log(window.fps)
         // events
         var actions = Object.keys(this.actions)
         for (var i = 0; i < actions.length; i++) {
             var key = actions[i]
-            if(this.keydowns[key]) {
-                // 如果按键被按下, 调用注册的 action
-                this.actions[key]()
+            var status = this.keydowns[key]
+            if(status == 'down') {
+                this.actions[key]('down')
+            } else if (status == 'up') {
+                this.actions[key]('up')
+                this.keydowns[key] = ''
             }
         }
         // update
@@ -61,15 +71,9 @@ class GeGame {
             g.runloop()
         }, 1000/window.fps)
     }
-    imageByName(name) {
-        log('image by name', this.images)
+    textureByName(name) {
         var img = this.images[name]
-        var image = {
-            w: img.width,
-            h: img.height,
-            image: img,
-        }
-        return image
+        return img
     }
     runWithScene(scene) {
         var g = this
@@ -101,9 +105,7 @@ class GeGame {
                 g.images[name] = img
                 // 所有图片都成功载入之后, 调用 run
                 loads.push(1)
-                log('load images', loads.length, names.length)
                 if (loads.length == names.length) {
-                    log('load images', g.images)
                     g.__start()
                 }
             }

@@ -9,22 +9,33 @@
         <canvas id="id-canvas" width="500" height="400"></canvas>
         <br>
         <input id=id-input-speed type="range" value="1">
+        <div class="tips">
+            <h3>关卡编辑</h3>
+            <ol>
+                <li>按 P 暂停并进入编辑状态</li>
+                <li>点击空白位置可增加砖块（初始生命值1）</li>
+                <li>点击砖块可改变其生命值（范围0-3）</li>
+                <li>点击并拖动弹球可移动弹球</li>
+                <li>按 S 保存关卡</li>
+                <li>再次按 P 恢复游戏</li>
+            </ol>
+        </div>
 
         <!-- game 相关文件 -->
         <script src="gegame/utils.js"></script>
         <script src="gegame/ge_game.js"></script>
         <script src="gegame/ge_scene.js"></script>
+        <script src="gegame/ge_image.js"></script>
         <!-- 场景文件 -->
         <script src='scene/main/paddle.js'></script>
-        <script src='scene/main/ball.js'></script>
         <script src='scene/main/block.js'></script>
+        <script src='scene/main/ball.js'></script>
         <script src='scene/main/scene.js'></script>
         <!-- 结束和标题场景 -->
         <script src='scene/end/scene_end.js'></script>
         <script src='scene/title/scene_title.js'></script>
-        <!-- 关卡数据 -->
-        <script src="js/level.js"></script>
         <!-- 主程序 -->
         <script src="js/index.js"></script>
+        <script src="js/level.js"></script>
     </body>
 </html>

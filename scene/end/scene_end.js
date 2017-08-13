@@ -1,4 +1,4 @@
-class SceneEnd extends GuaScene {
+class SceneEnd extends GeScene {
     constructor(game) {
         super(game)
         game.registerAction('r', function(){
@@ -7,7 +7,10 @@ class SceneEnd extends GuaScene {
         })
     }
     draw() {
-        // draw labels
-        this.game.context.fillText('游戏结束, 按 r 返回标题界面', 100, 290)
+        var text = '按 R 返回初始界面'
+        this.game.drawText(text, 150, 200)
+    }
+    update() {
+
     }
 }
