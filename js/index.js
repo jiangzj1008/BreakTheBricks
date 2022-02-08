@@ -3,11 +3,24 @@ var enableDebugMode = function(game, enable) {
         return
     }
     window.paused = false
+    window.loop = true
+    // 全局事件
     window.addEventListener('keydown', function(event){
         var k = event.key
         if (k == 'p') {
             // 暂停功能
             window.paused = !window.paused
+        }
+
+        if (k == 'l') {
+            // 暂停 loop
+            window.loop = !window.loop
+            console.log('gelog', 'loop', window.loop)
+            if (window.loop) {
+              game.stop()
+            } else {
+              game.continue()
+            }
         }
     })
     // 控制速度

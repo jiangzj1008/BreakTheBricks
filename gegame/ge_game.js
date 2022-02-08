@@ -3,6 +3,7 @@ class GeGame {
         window.fps = fps
         this.images = images
         this.runCallback = runCallback
+        this.running = false
         //
         this.scene = null
         this.actions = {}
@@ -46,7 +47,17 @@ class GeGame {
     registerAction(key, callback) {
         this.actions[key] = callback
     }
+    stop() {
+      this.running = false
+    }
+    continue() {
+      this.running = true
+      this.runloop()
+    }
     runloop() {
+        if (!this.running) {
+           return
+        }
         // events
         var actions = Object.keys(this.actions)
         for (var i = 0; i < actions.length; i++) {
@@ -79,9 +90,10 @@ class GeGame {
         var g = this
         g.scene = scene
         // 开始运行程序
-        setTimeout(function(){
-            g.runloop()
-        }, 1000/window.fps)
+        // 如果 game 在跑了，就不需要再触发 run
+        if (!g.running) {
+          this.continue()
+        }
     }
     replaceScene(scene) {
         this.scene = scene

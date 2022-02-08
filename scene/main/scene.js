@@ -74,6 +74,11 @@ class Scene extends GeScene {
                 self.setupBlock(self.level)
             }
         })
+        g.registerAction('t', function(keyStatus){
+            if (keyStatus == 'down') {
+                self.paddle.lengthen(50)
+            }
+        })
     }
     saveLevel() {
         var arr = []
@@ -177,6 +182,7 @@ class Scene extends GeScene {
         if (this.ball.life <= 0) {
             var s = SceneEnd.new(this.game)
             this.game.runWithScene(s)
+          // console.log('gelog', 'scene end')
         }
         var types = Object.keys(this.elements)
         for (var i = 0; i < types.length; i++) {
