@@ -61,6 +61,8 @@ var __main = function() {
     var images = {
         ball: 'img/ball.png',
         paddle: 'img/paddle.png',
+        playerSheet0: 'sprite/player1-sheet0.png',
+        playerSheet1: 'sprite/player1-sheet1.png',
     }
 
     inputPng(images, 'block', 3)
